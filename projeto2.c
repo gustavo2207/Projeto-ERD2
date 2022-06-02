@@ -1,3 +1,4 @@
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -6,6 +7,40 @@
 
 int destino, origem, vertices = 0;
 int custo, *custos = NULL;
+
+void printMatrix(int matrix[][nV]);
+
+// Implementing floyd warshall algorithm
+void floydWarshall(int graph[][nV]) {
+  int matrix[nV][nV], i, j, k;
+
+  for (i = 0; i < nV; i++)
+    for (j = 0; j < nV; j++)
+      matrix[i][j] = graph[i][j];
+
+  // Adding vertices individually
+  for (k = 0; k < nV; k++) {
+    for (i = 0; i < nV; i++) {
+      for (j = 0; j < nV; j++) {
+        if (matrix[i][k] + matrix[k][j] < matrix[i][j])
+          matrix[i][j] = matrix[i][k] + matrix[k][j];
+      }
+    }
+  }
+  printMatrix(matrix);
+}
+
+void printMatrix(int matrix[][nV]) {
+  for (int i = 0; i < nV; i++) {
+    for (int j = 0; j < nV; j++) {
+      if (matrix[i][j] == INF)
+        printf("%4s", "INF");
+      else
+        printf("%4d", matrix[i][j]);
+    }
+    printf("\n");
+  }
+}
 
 void dijkstra(int vertices,int origem,int destino,int *custos)
 {
@@ -95,8 +130,8 @@ void dijkstra(int vertices,int origem,int destino,int *custos)
 
 void limpar(void)
 {
-     printf("{FONTE}33[2J"); /* limpa a tela */
-     printf("{FONTE}33[1H"); /* poe o curso no topo */
+     printf("{FONTE}33[2J"); /* limpa a tela
+     printf("{FONTE}33[1H"); /* poe o curso no topo
 }
 
 void cabecalho(void)
@@ -154,7 +189,7 @@ void procurar(void)
 {
    int i, j;
 
-   /* Azul */
+   /* Azul
    printf("{FONTE}33[36;1m");
    printf("Lista dos Menores Caminhos no Grafo Dado: \n");
 
@@ -165,7 +200,7 @@ void procurar(void)
    }
 
    printf("<Pressione ENTER para retornar ao menu principal>\n");
-   /* Volta cor nornal */
+   /* Volta cor nornal
    printf("{FONTE}33[m");
 }
 
@@ -193,4 +228,118 @@ int main(int argc, char **argv) {
    printf("\nAte a proxima...\n\n");
 
    return 0;
+}
+*/
+
+// Floyd-Warshall Algorithm in C
+
+#include<stdio.h>
+#include<stdlib.h>
+
+// defining the number of vertices
+#define nV 4
+
+#define INF 9999999
+
+void printMatrix(int matrix[][nV]);
+
+// Implementing floyd warshall algorithm
+void floydWarshall(int graph[][nV], int path[nV][nV]) {
+  int matrix[nV][nV], i, j, k;
+
+  for (i = 0; i < nV; i++)
+    for (j = 0; j < nV; j++)
+      matrix[i][j] = graph[i][j];
+
+  // Adding vertices individually
+  for (k = 0; k < nV; k++) {
+    for (i = 0; i < nV; i++) {
+      for (j = 0; j < nV; j++) {
+        if (matrix[i][k] + matrix[k][j] < matrix[i][j]) {
+          matrix[i][j] = matrix[i][k] + matrix[k][j];
+          path[i][j] = k + 1;
+        }
+      }
+    }
+  }
+  printMatrix(matrix);
+  printf("\n");
+  printMatrix(path);
+}
+
+void printMatrix(int matrix[][nV]) {
+  for (int i = 0; i < nV; i++) {
+    for (int j = 0; j < nV; j++) {
+      if (matrix[i][j] == INF)
+        printf("%4s", "INF");
+      else
+        printf("%4d", matrix[i][j]);
+    }
+    printf("\n");
+  }
+}
+
+int createGraph(int matrix[nV][nV])
+{
+    int origem, destino, custo;
+    int path[nV][nV];
+
+    for(int i = 0; i< nV; i++){
+        for(int j = 0; j<nV; j++){
+            path[i][j] = -1;
+        }
+    }
+
+   printf("Entre com as Arestas:\n");
+   do {
+      do {
+         printf("Origem da aresta (entre 1 e %d ou '0' para sair): ", nV);
+         scanf("%d",&origem);
+      } while (origem < 0 || origem > nV);
+
+      if (origem) {
+         do {
+            printf("Destino da aresta (entre 1 e %d, menos %d): ", nV, origem);
+            scanf("%d", &destino);
+         } while (destino < 1 || destino > nV || destino == origem);
+
+         do {
+            printf("Custo (positivo) da aresta do vertice %d para o vertice %d: ",
+                  origem, destino);
+            scanf("%d",&custo);
+         } while (custo < 0);
+        if(origem != 0 && destino != 0){
+         matrix[origem-1][destino-1] = custo;
+         path[origem-1][destino-1] = origem - 1;
+        }
+      }
+
+   } while (origem);
+   floydWarshall(matrix, path);
+}
+
+int initializerGraph(int matrix[nV][nV]){
+
+    for(int i = 0; i< nV; i++){
+        for(int j = 0; j<nV; j++){
+            if(i == j){
+                matrix[i][j] = 0;
+            } else {
+                matrix[i][j] = INF;
+            }
+        }
+    }
+
+    createGraph(matrix);
+}
+
+int main() {
+  int graph[nV][nV] = {{0, 3, INF, 5},
+             {2, 0, INF, 4},
+             {INF, 1, 0, INF},
+             {INF, INF, 2, 0}};
+  int teste[nV][nV];
+  initializerGraph(teste);
+  // printf("\n");
+  // floydWarshall(graph);
 }
