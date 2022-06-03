@@ -1,21 +1,3 @@
-/*
-   {
-    // If there's no path between
-    // node u and v, simply return
-    // an empty array
-    if (Next[u][v] == -1)
-        return {};
-
-    // Storing the path in a vector
-    vector<int> path = { u };
-    while (u != v) {
-        u = Next[u][v];
-        path.push_back(u);
-    }
-    return path;
-}
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 
