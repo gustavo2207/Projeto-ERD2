@@ -12,7 +12,6 @@ typedef struct
     int ano;
 } Data;
 
-
 struct no
 {
     char nome[tam_nome];
@@ -24,13 +23,14 @@ struct no
 
 typedef struct no Lista;
 
-Lista *inicializa(){
+Lista *inicializa()
+{
     return NULL;
 }
 
 int vazia(Lista *recebida)
 {
-    if(recebida == NULL)
+    if (recebida == NULL)
     {
         return 1;
     }
@@ -44,17 +44,17 @@ Lista *inserir(Lista *recebida)
     Lista *novo;
     Data data_inserida;
 
-    novo = (Lista*) malloc(sizeof(Lista));
+    novo = (Lista *)malloc(sizeof(Lista));
     fflush(stdin);
     printf("Digite seu nome: ");
-    fgets(novo ->nome, tam_nome, stdin);
+    fgets(novo->nome, tam_nome, stdin);
 
     fflush(stdout);
     printf("\nDigite a Data da compra: ");
 
     printf("\n\tInsira o Dia da compra (dd): ");
     scanf("%d", &data_inserida.dia);
-    printf("\n\tInsira o Mês da compra (mm): ");
+    printf("\n\tInsira o Mï¿½s da compra (mm): ");
     scanf("%d", &data_inserida.mes);
     printf("\n\tInsira o Ano da compra (aaaa): ");
     scanf("%d", &data_inserida.ano);
@@ -62,11 +62,11 @@ Lista *inserir(Lista *recebida)
     novo->data_compra = data_inserida;
 
     printf("\nDigite o valor da compra: ");
-    scanf("%f", &novo ->divida);
-    printf("\nDigite a quantidade de prestações:");
-    scanf("%d", &novo ->num_prestacao);
+    scanf("%f", &novo->divida);
+    printf("\nDigite a quantidade de prestaï¿½ï¿½es:");
+    scanf("%d", &novo->num_prestacao);
     novo->num_prest_pagas = 0;
-    novo ->prox = recebida;
+    novo->prox = recebida;
 
     return novo;
 }
@@ -75,7 +75,7 @@ float calcula_divida(float divida_total, int num_parc, int num_parc_pagas)
 {
     float divida_restante;
 
-    divida_restante = divida_total - ((divida_total/num_parc) * num_parc_pagas);
+    divida_restante = divida_total - ((divida_total / num_parc) * num_parc_pagas);
 
     return divida_restante;
 }
@@ -83,14 +83,15 @@ float calcula_divida(float divida_total, int num_parc, int num_parc_pagas)
 int update_verificacao_parcelas(Lista *recebida, char nome[])
 {
     Lista *p;
-    for(p=recebida; p->nome == nome; p=p->prox);
+    for (p = recebida; p->nome == nome; p = p->prox)
+        ;
 
-    if(strcmp(nome, p->nome) !=0)
+    if (strcmp(nome, p->nome) != 0)
     {
         return -1;
     }
 
-    if(p->num_prestacao == p->num_prest_pagas)
+    if (p->num_prestacao == p->num_prest_pagas)
     {
         return 0;
     }
@@ -101,26 +102,27 @@ int update_verificacao_parcelas(Lista *recebida, char nome[])
     printf("nome = ");
     puts(p->nome);
     printf("\nvalor da divida = %.2f\n", calcula_divida(p->divida, p->num_prestacao, p->num_prest_pagas));
-    printf("quantidade de prestações pagas = %d\n\n", p->num_prest_pagas);
+    printf("quantidade de prestaï¿½ï¿½es pagas = %d\n\n", p->num_prest_pagas);
 }
 
-void imprime (Lista* recebida)
+void imprime(Lista *recebida)
 {
     system("cls");
 
-    if(vazia(recebida))
+    if (vazia(recebida))
     {
         printf("\n\n\t\tLista Vazia!!\n\n");
-    } else
+    }
+    else
     {
-        Lista* p;
+        Lista *p;
         for (p = recebida; p != NULL; p = p->prox)
         {
             printf("\nNome = ");
             puts(p->nome);
             printf("Data da compra = %d/%d/%d\n", p->data_compra.dia, p->data_compra.mes, p->data_compra.ano);
             printf("Valor da compra = %.2f\n", p->divida);
-            printf("Quantidade de prestações = %d\n\n", p->num_prestacao);
+            printf("Quantidade de prestaï¿½ï¿½es = %d\n\n", p->num_prestacao);
         }
     }
 }
@@ -132,23 +134,25 @@ void update_parcelas(Lista *recebida)
     int verificacao;
     char nome[tam_nome];
 
-    if(vazia(recebida))
+    if (vazia(recebida))
     {
         printf("\n\n\t\tLista Vazia!!\n\n");
-    } else
+    }
+    else
     {
         fflush(stdin);
-        printf("\n\nInsira o nome para atualização de parcelas pagas: ");
+        printf("\n\nInsira o nome para atualizaï¿½ï¿½o de parcelas pagas: ");
         fgets(nome, tam_nome, stdin);
         fflush(stdout);
 
         verificacao = update_verificacao_parcelas(recebida, nome);
-        if(verificacao == 0)
+        if (verificacao == 0)
         {
             printf("Sem valores a pagar");
-        } else if(verificacao == -1)
+        }
+        else if (verificacao == -1)
         {
-            printf("Nome não encontrado");
+            printf("Nome nï¿½o encontrado");
         }
     }
 }
@@ -160,31 +164,34 @@ void busca_cliente(Lista *recebida)
     char nome[tam_nome];
     Lista *p;
 
-    if(vazia(recebida))
+    if (vazia(recebida))
     {
         printf("\n\n\t\tLista Vazia!!\n\n");
-    } else
+    }
+    else
     {
         fflush(stdin);
         printf("\n\nInsira o nome para efetuar a busca: ");
         fgets(nome, tam_nome, stdin);
         fflush(stdout);
 
-        for(p=recebida; p->nome == nome; p=p->prox);
+        for (p = recebida; p->nome == nome; p = p->prox)
+            ;
 
-        if(strcmp(nome, p->nome) != 0)
+        if (strcmp(nome, p->nome) != 0)
         {
-            printf("\t\tNome não encontrado");
-        } else
+            printf("\t\tNome nï¿½o encontrado");
+        }
+        else
         {
-            printf("\n\t\tInformações\n\n");
+            printf("\n\t\tInformaï¿½ï¿½es\n\n");
             printf("\n\n\t\tNome = ");
             puts(p->nome);
             printf("\t\tData da compra = %d/%d/%d\n", p->data_compra.dia, p->data_compra.mes, p->data_compra.ano);
             printf("\t\tValor da compra = %.2f\n", p->divida);
             printf("\t\tValor da divida = %.2f\n", calcula_divida(p->divida, p->num_prestacao, p->num_prest_pagas));
-            printf("\t\tQuantidade de prestações = %d\n", p->num_prestacao);
-            printf("\t\tQuantidade de prestações pagas = %d\n\n", p->num_prest_pagas);
+            printf("\t\tQuantidade de prestaï¿½ï¿½es = %d\n", p->num_prestacao);
+            printf("\t\tQuantidade de prestaï¿½ï¿½es pagas = %d\n\n", p->num_prest_pagas);
         }
     }
 }
@@ -197,22 +204,24 @@ Lista *liberar(Lista *recebida)
     Lista *p;
     char nome[tam_nome];
 
-    if(vazia(recebida))
+    if (vazia(recebida))
     {
         printf("\n\n\t\tLista Vazia!!\n\n");
-    } else
+    }
+    else
     {
         fflush(stdin);
         printf("\n\nInsira o nome para deletar: ");
         fgets(nome, tam_nome, stdin);
         fflush(stdout);
 
-        if(strcmp(recebida->nome, nome) == 0)
+        if (strcmp(recebida->nome, nome) == 0)
         {
             aux = recebida->prox;
             free(recebida);
             return aux;
-        } else
+        }
+        else
         {
             p = recebida;
             while (strcmp(recebida->nome, nome) != 0)
@@ -229,29 +238,32 @@ Lista *liberar(Lista *recebida)
 
 void menu(Lista *recebida)
 {
-    int opcao=0;
+    int opcao = 0;
     while (opcao != 6)
     {
-        printf("\n\t Opçao 1: Inserir Novo Cliente");
-        printf("\n\t Opçao 2: Remover Cliente");
-        printf("\n\t Opçao 3: Atualizar Parcelamento");
-        printf("\n\t Opçao 4: Imprimir Informações de Todos os Clientes");
-        printf("\n\t Opçao 5: Imprimir Informações de um Cliente");
-        printf("\n\t Opçao 6: Sair");
+        printf("\n\t Opï¿½ao 1: Inserir Novo Cliente");
+        printf("\n\t Opï¿½ao 2: Remover Cliente");
+        printf("\n\t Opï¿½ao 3: Atualizar Parcelamento");
+        printf("\n\t Opï¿½ao 4: Imprimir Informaï¿½ï¿½es de Todos os Clientes");
+        printf("\n\t Opï¿½ao 5: Imprimir Informaï¿½ï¿½es de um Cliente");
+        printf("\n\t Opï¿½ao 6: Sair");
 
-        printf("\n\n\t\t Escolha uma opção: ");
+        printf("\n\n\t\t Escolha uma opï¿½ï¿½o: ");
         scanf("%d", &opcao);
 
-        if(opcao == 1)
+        if (opcao == 1)
         {
             recebida = inserir(recebida);
-        }else if (opcao == 2)
+        }
+        else if (opcao == 2)
         {
             recebida = liberar(recebida);
-        }else if (opcao == 3)
+        }
+        else if (opcao == 3)
         {
             update_parcelas(recebida);
-        }else if (opcao == 4)
+        }
+        else if (opcao == 4)
         {
             imprime(recebida);
         }
@@ -259,7 +271,8 @@ void menu(Lista *recebida)
         {
             busca_cliente(recebida);
         }
-        else{
+        else
+        {
             break;
         }
     }
@@ -267,7 +280,7 @@ void menu(Lista *recebida)
 
 int main()
 {
-    setlocale(LC_ALL,"portuguese");
+    setlocale(LC_ALL, "portuguese");
     Lista *inicio;
     inicio = inicializa();
     menu(inicio);
